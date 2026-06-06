@@ -1,7 +1,7 @@
 // GitHub Icon
 export const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
-    xmlns="http://w3.org"
+    xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
@@ -18,7 +18,7 @@ export const GitHubIcon = (props: React.SVGProps<SVGSVGElement>) => (
 // Google "G" Icon
 export const GoogleIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
-    xmlns="http://w3.org"
+    xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"

@@ -9,7 +9,7 @@ const Home = async () => {
 
   return (
     <main className="flex items-center justify-center min-h-screen">
-      Protected content. Welcome, {data[0].email}!
+      Protected content. Welcome, {data[0]?.email ?? "User"}!
       <br />
       <LogOutButton />
     </main>
