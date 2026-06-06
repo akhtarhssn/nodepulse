@@ -26,7 +26,7 @@ import { authClient } from "@/lib/auth-client";
 import { Loader2 } from "lucide-react";
 
 const loginSchema = z.object({
-  email: z.email("Invalid email address"),
+  email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
@@ -53,7 +53,6 @@ const LoginForm = () => {
       {
         onSuccess: () => {
           toast.success("Successfully signed in!");
-          router.push("/");
         },
         onError: (context) => {
           toast.error(
@@ -63,19 +62,19 @@ const LoginForm = () => {
       },
     );
   };
-
   const isPending = form.formState.isSubmitting;
 
   return (
-    <div className="w-full max-w-125 mx-auto flex flex-col justify-center min-h-[80vh] px-4 py-12 antialiased selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
+    <div className="w-full max-w-125 mx-auto flex flex-col justify-center px-4 antialiased selection:bg-black selection:text-white dark:selection:bg-white dark:selection:text-black">
       <Card className="px-5">
         {/* Apple Header Typographic Hierarchy */}
         <CardHeader className="space-y-1.5 text-center pt-8">
           <CardTitle className="text-[32px] font-semibold tracking-[-0.03em] text-zinc-900 dark:text-zinc-50 leading-tight">
-            Sign In
+            Welcome Back!
           </CardTitle>
           <CardDescription className="text-[15px] text-zinc-500 dark:text-zinc-400 font-normal tracking-tight max-w-70 mx-auto">
-            Use your account credentials to access your workspace.
+            We're excited to have you back. Please sign in to your account to
+            continue
           </CardDescription>
         </CardHeader>
 
@@ -151,7 +150,7 @@ const LoginForm = () => {
               <Button
                 type="submit"
                 disabled={isPending}
-                className="w-full h-12 rounded-xl bg-zinc-900 text-zinc-50 hover:bg-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:hover:bg-zinc-200 text-[15px] font-medium transition-all duration-200 shadow-sm disabled:opacity-50 active:scale-[0.99] mt-8!"
+                className="w-full h-12 rounded-xl text-[15px] font-medium transition-all duration-200 shadow-sm disabled:opacity-50 active:scale-[0.99]"
               >
                 {isPending ? (
                   <span className="flex items-center gap-2 justify-center">
@@ -199,7 +198,7 @@ const LoginForm = () => {
           <div className="text-center text-[13px] text-zinc-400 dark:text-zinc-500 font-normal tracking-tight border-t border-zinc-100 dark:border-zinc-900 pt-6 mt-4">
             Don't have an account?{" "}
             <Link
-              href="/register"
+              href="/signup"
               className="text-zinc-900 dark:text-zinc-100 hover:underline font-medium transition-colors ml-0.5"
             >
               Create yours now
