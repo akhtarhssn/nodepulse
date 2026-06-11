@@ -24,30 +24,26 @@ export const execute = inngest.createFunction(
       },
     );
 
-    // const { steps: openaiSteps } = await step.ai.wrap(
-    //   "openai-generate-text",
-    //   generateText,
-    //   {
-    //     model: openai("gpt-3.5-turbo"),
-    //     prompt: "Write a vegetarian lasagna recipe for 4 people.",
-    //     system: "You are a helpful assistant for generating recipes.",
-    //   },
-    // );
+    const { steps: openaiSteps } = await step.ai.wrap(
+      "openai-generate-text",
+      generateText,
+      {
+        model: openai("gpt-3.5-turbo"),
+        prompt: "Write a vegetarian lasagna recipe for 4 people.",
+        system: "You are a helpful assistant for generating recipes.",
+      },
+    );
 
-    // const { steps: anthropicSteps } = await step.ai.wrap(
-    //   "anthropic-generate-text",
-    //   generateText,
-    //   {
-    //     model: anthropic("claude-sonnet-4-0"),
-    //     prompt: "Write a vegetarian lasagna recipe for 4 people.",
-    //     system: "You are a helpful assistant for generating recipes.",
-    //   },
-    // );
+    const { steps: anthropicSteps } = await step.ai.wrap(
+      "anthropic-generate-text",
+      generateText,
+      {
+        model: anthropic("claude-sonnet-4-0"),
+        prompt: "Write a vegetarian lasagna recipe for 4 people.",
+        system: "You are a helpful assistant for generating recipes.",
+      },
+    );
     // return { message: `Task ${event.data.id} complete`, result };
-    return {
-      geminiSteps,
-      // openaiSteps,
-      // anthropicSteps
-    };
+    return { geminiSteps, openaiSteps, anthropicSteps };
   },
 );
