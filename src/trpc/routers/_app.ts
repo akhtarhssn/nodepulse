@@ -1,7 +1,17 @@
 import prisma from "@/lib/db";
 import { createTRPCRouter, protectedProcedure } from "../init";
 import { inngest } from "@/inngest/client";
+import { google } from "@ai-sdk/google";
+import { generateText } from "ai";
+
 export const appRouter = createTRPCRouter({
+  testAi: protectedProcedure.mutation(async () => {
+    await inngest.send({
+      name: "execute/ai",
+    });
+    return { success: true, message: "AI test initiated" };
+  }),
+
   getUsers: protectedProcedure.query(({ ctx }) => {
     return prisma.user.findMany({
       where: {

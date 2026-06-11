@@ -1,31 +1,49 @@
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { generateText } from "ai";
+import { createOpenAI } from "@ai-sdk/openai";
+import { createAnthropic } from "@ai-sdk/anthropic";
+
 import prisma from "@/lib/db";
 import { inngest } from "./client";
 
-export const processTask = inngest.createFunction(
-  { id: "process-task", triggers: { event: "app/task.created" } },
+const google = createGoogleGenerativeAI();
+const openai = createOpenAI();
+const anthropic = createAnthropic();
+
+export const execute = inngest.createFunction(
+  { id: "execute-ai", triggers: { event: "execute/ai" } },
   async ({ event, step }) => {
-    const result = await step.run("handle-task", async () => {
-      return { processed: true, id: event.data.id };
-    });
+    await step.sleep("pretend", "5s");
+    const { steps: geminiSteps } = await step.ai.wrap(
+      "gemini-generate-text",
+      generateText,
+      {
+        model: google("gemini-3.5-flash"),
+        prompt: "Write a vegetarian lasagna recipe for 4 people.",
+        system: "You are a helpful assistant for generating recipes.",
+      },
+    );
 
-    // fetching the video
-    await step.sleep("fetching-video", "5s");
+    const { steps: openaiSteps } = await step.ai.wrap(
+      "openai-generate-text",
+      generateText,
+      {
+        model: openai("gpt-3.5-turbo"),
+        prompt: "Write a vegetarian lasagna recipe for 4 people.",
+        system: "You are a helpful assistant for generating recipes.",
+      },
+    );
 
-    // Transforming the video
-    await step.sleep("transforming-video", "5s");
-
-    // Sending the video to AI
-    await step.sleep("sending-to-ai", "5s");
-
-    await step.run("creating-workflow", () => {
-      return prisma.workflow.create({
-        data: {
-          name: `Workflow for task ${event.data.id}`,
-          description: `Workflow created for task ${event.data.id}`,
-        },
-      });
-    });
-
-    return { message: `Task ${event.data.id} complete`, result };
+    const { steps: anthropicSteps } = await step.ai.wrap(
+      "anthropic-generate-text",
+      generateText,
+      {
+        model: anthropic("claude-sonnet-4-0"),
+        prompt: "Write a vegetarian lasagna recipe for 4 people.",
+        system: "You are a helpful assistant for generating recipes.",
+      },
+    );
+    // return { message: `Task ${event.data.id} complete`, result };
+    return { geminiSteps, openaiSteps, anthropicSteps };
   },
 );
