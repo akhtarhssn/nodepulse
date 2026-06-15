@@ -1,0 +1,86 @@
+language: "en-US"
+early_access: false
+
+reviews:
+  # 'assertive' ensures strict adherence to clean architecture, performance, and security.
+  profile: "assertive"
+
+  # Structural changes will trigger Mermaid sequence diagrams automatically (Pro/Pro+ tiers).
+  sequence_diagrams: true
+
+  # Disables the classic automated poems/summaries to keep the PR timeline purely professional.
+  poem: false
+  in_progress_fortune: false
+
+  # Enables high-level walkthrough tables and structural change tracking.
+  high_level_summary: true
+  review_status: true
+  collapse_walkthrough: true
+  assess_linked_issues: true
+
+  # Auto-generate crisp PR titles using standard Conventional Commits formatting.
+  auto_title_placeholder: "@coderabbitai title"
+  auto_title_instructions: 'Format: "<category>: <title>". Category must be one of: feat, fix, docs, style, refactor, perf, test, build, ci, chore. Max 80 chars.'
+
+  # Global personality alignment for the AI.
+  tone_instructions: >
+    You are a principal software engineer and solutions architect. Your tone is constructive, 
+    highly technical, precise, and educational. Focus deeply on security vulnerabilities, 
+    state mutations, async/await race conditions, rendering performance, and scale. Avoid fluff.
+
+    # Automation triggers: Keep the bot from interrupting local/active development states.
+  auto_review:
+    enabled: true
+    drafts: false # Do not review Draft PRs; wait until they are marked "Ready for Review"
+
+  # Prevent bot noise on Work-In-Progress or administrative branch actions.
+  ignored_titles:
+    - "WIP"
+    - "work in progress"
+    - "chore(release):"
+    - "bump version"
+
+  # 1. Noise reduction filters: Prevent AI analysis on build outputs, dependencies, and static assets.
+  path_filters:
+    - "!node_modules/**"
+    - "!.next/**"
+    - "!dist/**"
+    - "!build/**"
+    - "!out/**"
+    - "!public/assets/**"
+    - "!package-lock.json"
+    - "!yarn.lock"
+    - "!pnpm-lock.yaml"
+
+  # 2. Native Tool integrations: Enable lightweight ecosystem linters natively within CodeRabbit.
+  tools:
+    biome:
+      enabled: true # Lightning fast web formatting/linting analysis
+    actionlint:
+      enabled: true # Validates GitHub Action CI/CD workflows for syntax security
+
+  # 3. Context-Aware Engineering Rules: Strict structural guidelines for modern web development.
+  path_instructions:
+    # Next.js App Router, Server Components & React Context Rules
+    - path: "src/app/**/*"
+      instructions: >
+        Enforce clean separation between React Server Components (RSC) and Client Components. 
+        Verify that database calls or sensitive API secrets are never exposed on the client side.
+        Ensure async/await operations inside Server Components are wrapped with appropriate error boundaries or top-level Suspense states.
+
+    # Advanced Web Interactions & Memory Leak Prevention (GSAP, DOM, Event Listeners)
+    - path: "src/components/**/*"
+      instructions: >
+        Inspect useEffect and hook implementations thoroughly. Verify that all async subscriptions, 
+        event listeners, and animation timelines (such as GSAP timelines or ScrollTriggers) are explicitly 
+        killed, cleared, or reverted in the cleanup/unmount phase to prevent devastating client-side memory leaks.
+        Ensure custom components use declarative primitives and don't introduce unnecessary DOM re-renders.
+
+    # Strict Data Integrity & State Hygiene
+    - path: "src/store/**/*"
+      instructions: >
+        Enforce strict state mutation paradigms. Verify that pure functions remain completely side-effect free.
+        Flag any architectural anti-patterns where state mutations are mixed directly with network I/O operations.
+
+chat:
+  auto_reply: true # Allows immediate interactive debugging when you tag or reply to CodeRabbit
