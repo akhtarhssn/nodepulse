@@ -24,6 +24,9 @@ const Home = () => {
         // queryClient.invalidateQueries(trpc.getWorkflows.queryOptions());
         toast.success("Workflow creation initiated");
       },
+      onError: (error) => {
+        toast.error(error.message);
+      },
     }),
   );
 
@@ -31,6 +34,9 @@ const Home = () => {
     trpc.testAi.mutationOptions({
       onSuccess: () => {
         toast.success("AI test initiated");
+      },
+      onError: (error) => {
+        toast.error(error.message);
       },
     }),
   );
